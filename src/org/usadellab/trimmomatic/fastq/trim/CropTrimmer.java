@@ -1,0 +1,23 @@
+package org.usadellab.trimmomatic.fastq.trim;
+
+import org.usadellab.trimmomatic.fastq.FastqRecord;
+
+public class CropTrimmer extends AbstractSingleRecordTrimmer
+{
+	private int len;
+
+	public CropTrimmer(String args)
+	{
+		len=Integer.parseInt(args);
+	}
+
+	@Override
+	public FastqRecord processRecord(FastqRecord in)
+	{
+		if(in.getSequence().length()<len)
+			return in;
+	
+		return new FastqRecord(in,0,len);
+	}
+
+}
