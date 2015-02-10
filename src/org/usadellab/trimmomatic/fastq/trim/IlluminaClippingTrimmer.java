@@ -64,6 +64,7 @@ public class IlluminaClippingTrimmer implements Trimmer
 			FastaRecord rec = parser.next();
 
 			String name = rec.getName();
+//			System.out.println("Loaded "+name+" with "+rec.getSequence());
 
 			if (name.endsWith(SUFFIX_F))
 				{
@@ -108,6 +109,11 @@ public class IlluminaClippingTrimmer implements Trimmer
 		forwardSeqs = mapClippingSet(forwardSeqMap);
 		reverseSeqs = mapClippingSet(reverseSeqMap);
 		commonSeqs = mapClippingSet(commonSeqMap);
+		
+		System.out.println("ILLUMINACLIP: Using "+prefixPairs.size()+" prefix pairs, "+
+				commonSeqs.size()+" forward/reverse sequences, "+
+				forwardSeqs.size()+" forward only sequences, "+
+				reverseSeqs.size()+" reverse only sequences");
 
 	}
 
@@ -278,15 +284,17 @@ public class IlluminaClippingTrimmer implements Trimmer
 				{
 				likelihood[i - start] = 0;
 				}
-			if (ch1 != ch2)
+			else if (ch1 != ch2)
 				{
-				likelihood[i - start] = quals[offset] / 10.0f;
+				likelihood[i - start] = -quals[offset] / 10.0f;
 				}
 			else
 				likelihood[i - start] = LOG10_4;
 			}
-
-		return calculateMaximumRange(likelihood);
+		
+		float l=calculateMaximumRange(likelihood);
+			
+		return l;
 	}
 
 	private Integer palindromeReadsCompare(FastqRecord rec1, FastqRecord rec2, IlluminaPrefixPair pair)
@@ -478,8 +486,6 @@ public class IlluminaClippingTrimmer implements Trimmer
 			if (val > max)
 				max = val;
 			}
-
-		// System.out.println("Got total "+max);
 
 		return total;
 	}

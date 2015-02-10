@@ -1,5 +1,5 @@
 <project name="Trimmomatic" default="dist" basedir=".">
-	<property name="version" value="0.17"/>
+	<property name="version" value="0.20"/>
 	
 	<property name="src" location="src" />
 	<property name="lib" location="lib" />
@@ -51,7 +51,7 @@
 		</zip>
 		
 		<zip destfile="${dist}/Trimmomatic-Src-${version}.zip">
-		    <fileset dir="." excludes=".*,bin/**/*,build/**/*,dist/**/*"/>
+		    <zipfileset dir="." excludes=".*,bin/**/*,build/**/*,dist/**/*,data/**/*,test/**/*" prefix="trimmomatic-${version}/"/>
 		</zip>
 
 	</target>

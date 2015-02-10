@@ -28,7 +28,7 @@ public class FastaRecord
 		return sequence;
 	}
 	
-	public String getfullName(){
+	public String getFullName(){
 		return fullName;
 	}
 	

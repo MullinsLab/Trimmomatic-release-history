@@ -27,19 +27,22 @@ public class FastaParser
 		if(currentLine==null)
 			currentLine = reader.readLine();
 		
+		while(currentLine!=null && !currentLine.startsWith(">"))
+			currentLine = reader.readLine();
+		
 		if (currentLine != null && currentLine.startsWith(">"))
 			{
-			String tokens[]=currentLine.split("[\\| ]");
-			String name=tokens[0].substring(1);
-			
 			String fullName = currentLine.substring(1).trim();
+			String tokens[]=fullName.split("[\\| ]");
+			String name=tokens[0];
 			
 			StringBuilder builder=new StringBuilder();
 			
 			currentLine=reader.readLine();
 			while(currentLine!=null && !currentLine.startsWith(">"))
 				{
-				builder.append(currentLine.trim());
+				if(!currentLine.startsWith(";"))
+					builder.append(currentLine.trim());
 				currentLine=reader.readLine();
 				}		
 			
