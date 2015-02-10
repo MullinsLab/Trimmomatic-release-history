@@ -6,6 +6,7 @@ public class FastqRecord
 	private String sequence;
 	private String comment;
 	private String quality;
+        private String barcodeLabel = null; 
 	
 	private int phredOffset;
 	private int headPos;
@@ -27,25 +28,23 @@ public class FastqRecord
 	public FastqRecord(FastqRecord base, int headPos, int length)
 	{
 		this.sequence=base.sequence.substring(headPos,headPos+length);
-		this.quality=base.quality.substring(headPos,headPos+length);
-		
+		this.quality=base.quality.substring(headPos,headPos+length);		
 		this.name=base.name;
 		this.comment=base.comment;
-		this.phredOffset=base.phredOffset;	
-		
+		this.phredOffset=base.phredOffset;			
 		this.headPos=base.headPos+headPos;
+                this.barcodeLabel = base.barcodeLabel;
 	}
 
 	public FastqRecord(FastqRecord base, String sequence, String quality, int phredOffset)
 	{
 		this.sequence=sequence;
-		this.quality=quality;
-		
+		this.quality=quality;		
 		this.name=base.name;
 		this.comment=base.comment;
 		this.headPos=base.headPos;
-
 		this.phredOffset=phredOffset;
+                this.barcodeLabel = base.barcodeLabel;
 	}
 
 	public String getName()
@@ -57,6 +56,14 @@ public class FastqRecord
 	{
 		return sequence;
 	}
+
+        public String getBarcodeLabel() {
+            return barcodeLabel;
+        }
+
+        public void setBarcodeLabel(String barcodeLabel) {
+            this.barcodeLabel = barcodeLabel;
+        }
 	
 	public String getComment()
 	{

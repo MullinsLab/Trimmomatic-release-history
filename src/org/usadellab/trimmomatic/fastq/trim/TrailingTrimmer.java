@@ -11,6 +11,11 @@ public class TrailingTrimmer extends AbstractSingleRecordTrimmer
 		qual=Integer.parseInt(args);
 	}
 
+        public TrailingTrimmer(int qual) {
+            this.qual = qual;
+        }        
+        
+
 	@Override
 	public FastqRecord processRecord(FastqRecord in)
 	{

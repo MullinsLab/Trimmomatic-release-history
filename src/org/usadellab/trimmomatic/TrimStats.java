@@ -83,7 +83,7 @@ public class TrimStats
 		double survivingReversePercent=(100.0*survivingReverse)/input;
 		double droppedPercent=(100.0*dropped)/input;
 
-		return "Input Reads: "+input+
+		return "Input Read Pairs: "+input+
 		   " Both Surviving: "+survivingBoth+" ("+formatter.format(survivingBothPercent)+
 		   "%) Forward Only Surviving: "+survivingForward+" ("+formatter.format(survivingForwardPercent)+
 		   "%) Reverse Only Surviving: "+survivingReverse+" ("+formatter.format(survivingReversePercent)+

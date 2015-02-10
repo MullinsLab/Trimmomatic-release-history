@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.usadellab.trimmomatic.fasta.FastaParser;
 import org.usadellab.trimmomatic.fasta.FastaRecord;
 import org.usadellab.trimmomatic.fastq.FastqRecord;
@@ -46,6 +48,19 @@ public class IlluminaClippingTrimmer implements Trimmer
 		minPalindromeLikelihood = Integer.parseInt(arg[2]);
 		minSequenceLikelihood = Integer.parseInt(arg[3]);
 	}
+
+    public IlluminaClippingTrimmer(File seqs, int seedMaxMiss, int minPalindromeLikelihood, int minSequenceLikelihood) {
+        this.seedMaxMiss = seedMaxMiss;
+        this.minPalindromeLikelihood = minPalindromeLikelihood;
+        this.minSequenceLikelihood = minSequenceLikelihood;
+        try {
+            loadSequences(seqs.getCanonicalPath());
+        } catch (IOException ex) {
+            Logger.getLogger(IlluminaClippingTrimmer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+        
 
 	private void loadSequences(String seqPath) throws IOException
 	{
@@ -233,11 +248,12 @@ public class IlluminaClippingTrimmer implements Trimmer
 
 		long packRec[] = packSeq(rec.getSequence(), false);
 		long packClip[] = clipSeq.getPack();
+		long mask= clipSeq.getMask();
 
 		for (int i = 0; i < packRec.length; i++)
 			for (int j = 0; j < packClip.length; j++)
 				{
-				int diff = Long.bitCount(packRec[i] ^ packClip[j]);
+				int diff = Long.bitCount((packRec[i] ^ packClip[j])&mask);
 
 				if (diff <= seedMax)
 					{
@@ -507,6 +523,8 @@ public class IlluminaClippingTrimmer implements Trimmer
 
 		private IlluminaPrefixPair(String prefix1, String prefix2)
 		{
+			System.out.println("Using PrefixPair: '"+prefix1+"' and '"+prefix2+"'");
+		
 			int length1 = prefix1.length();
 			int length2 = prefix2.length();
 
@@ -538,13 +556,22 @@ public class IlluminaClippingTrimmer implements Trimmer
 	private static class IlluminaClippingSeq
 	{
 		private String seq;
-
 		private long pack[];
+		private long mask;
 
 		private IlluminaClippingSeq(String seq)
 		{
+			System.out.println("Using Clipping Sequence: '"+seq+"'");
+		
 			this.seq = seq;
-
+			this.mask = 0xFFFFFFFFFFFFFFFFL; 
+			
+			if(seq.length()<16)
+				{
+				mask<<=16-seq.length()*4;
+				seq=(seq+"NNNNNNNNNNNNNNNN").substring(0,16);
+				}
+			
 			long fullPack[] = packSeq(seq, false);
 
 			pack = new long[(fullPack.length + INTERLEAVE - 1) / INTERLEAVE];
@@ -561,6 +588,11 @@ public class IlluminaClippingTrimmer implements Trimmer
 		public long[] getPack()
 		{
 			return pack;
+		}
+		
+		public long getMask()
+		{
+			return mask;
 		}
 	}
 

@@ -214,7 +214,7 @@ public class TrimmomaticSE
 
 		File trimLog = null;
 
-		while (args[argIndex].startsWith("-") && argIndex < args.length)
+		while (argIndex < args.length && args[argIndex].startsWith("-"))
 			{
 			String arg = args[argIndex++];
 			if (arg.equals("-phred33"))
@@ -240,7 +240,7 @@ public class TrimmomaticSE
 		if (args.length - argIndex < 3 || badOption)
 			{
 			System.out
-					.println("Usage: TrimmomaticSE [threads <threads>] [-phred33|-phred64] [-trimlog <trimLogFile>] <inputFile> <outputFile> <trimmer1>...");
+					.println("Usage: TrimmomaticSE [-threads <threads>] [-phred33|-phred64] [-trimlog <trimLogFile>] <inputFile> <outputFile> <trimmer1>...");
 			System.exit(1);
 			}
 

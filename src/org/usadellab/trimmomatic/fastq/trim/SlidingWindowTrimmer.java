@@ -10,13 +10,20 @@ public class SlidingWindowTrimmer extends AbstractSingleRecordTrimmer
 
 	public SlidingWindowTrimmer(String args)
 	{
-		String arg[]=args.split(":");
-		
+		String arg[]=args.split(":");		
 		windowLength=Integer.parseInt(arg[0]);
-		requiredQuality=Float.parseFloat(arg[1]);
-		
+		requiredQuality=Float.parseFloat(arg[1]);		
 		totalRequiredQuality=requiredQuality*windowLength; // Convert to total
 	}
+
+        public SlidingWindowTrimmer(int windowLength, float requiredQuality) {
+            this.windowLength = windowLength;
+            this.requiredQuality = requiredQuality;
+            this.totalRequiredQuality = totalRequiredQuality;            
+            totalRequiredQuality=requiredQuality*windowLength; // Convert to total
+        }
+        
+        
 
 	@Override
 	public FastqRecord processRecord(FastqRecord in)

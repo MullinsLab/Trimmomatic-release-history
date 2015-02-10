@@ -1,5 +1,5 @@
 <project name="Trimmomatic" default="dist" basedir=".">
-	<property name="version" value="0.20"/>
+	<property name="version" value="0.22"/>
 	
 	<property name="src" location="src" />
 	<property name="lib" location="lib" />
@@ -10,12 +10,14 @@
 	<property name="dist_build" location="dist/build" />
 	<property name="dist_lib" location="dist/lib" />
 	<property name="dist_jar" location="dist/jar" />
+	<property name="dist_unpack" location="dist/unpack" />
 
 	<target name="init">
 		<mkdir dir="${dist}" />
 		<mkdir dir="${dist_build}" />
 		<mkdir dir="${dist_lib}"/>
 		<mkdir dir="${dist_jar}" />
+		<mkdir dir="${dist_unpack}" />
 	</target>
 
 	<target name="import" depends="init">
@@ -43,7 +45,23 @@
 	</target>
 
 	<target name="dist" depends="compile">
-		<jar jarfile="${dist_jar}/trimmomatic-${version}.jar" basedir="${dist_build}" />
+		<unjar dest="${dist_unpack}">
+		    <fileset dir="${dist_lib}">
+	            <include name="**/*.jar"/>
+            </fileset>
+        </unjar>
+        
+        <delete dir="${dist_unpack}/META-INF"/>
+        <delete dir="${dist_unpack}/demo"/>
+        <move file="${dist_unpack}/AUTHORS" tofile="${dist_unpack}/AUTHORS.jbzip2"/>
+		<move file="${dist_unpack}/LICENCE" tofile="${dist_unpack}/LICENCE.jbzip2"/>
+	
+		<copy todir="${dist_unpack}">
+    		<fileset dir="${dist_build}">
+    		</fileset>
+		</copy>
+	
+		<jar jarfile="${dist_jar}/trimmomatic-${version}.jar" basedir="${dist_unpack}" />
 		
 		<zip destfile="${dist}/Trimmomatic-${version}.zip">
 			<zipfileset prefix="Trimmomatic-${version}" dir="${distsrc}"/>

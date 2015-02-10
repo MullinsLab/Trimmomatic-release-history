@@ -11,6 +11,12 @@ public class MinLenTrimmer extends AbstractSingleRecordTrimmer
 		minLen=Integer.parseInt(args);
 	}
 
+        public MinLenTrimmer(int minLen) {
+            this.minLen = minLen;
+        }
+
+        
+
 	@Override
 	public FastqRecord processRecord(FastqRecord in)
 	{

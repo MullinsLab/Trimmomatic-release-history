@@ -1,6 +1,9 @@
 package org.usadellab.trimmomatic.fastq.trim;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+
 
 public class TrimmerFactory
 {

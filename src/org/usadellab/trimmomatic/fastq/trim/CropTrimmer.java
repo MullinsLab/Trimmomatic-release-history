@@ -11,6 +11,11 @@ public class CropTrimmer extends AbstractSingleRecordTrimmer
 		len=Integer.parseInt(args);
 	}
 
+        public CropTrimmer(int len) {
+            this.len = len;
+        }        
+        
+
 	@Override
 	public FastqRecord processRecord(FastqRecord in)
 	{

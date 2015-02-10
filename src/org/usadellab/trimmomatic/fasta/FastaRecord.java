@@ -5,11 +5,12 @@ public class FastaRecord
 	private String name;
 	private String sequence;
 	private String fullName;
+        private String barcodeLabel = null;
 	
 	public FastaRecord(String name, String sequence)
 	{
 		this.name=name;
-		this.sequence=sequence;;
+		this.sequence=sequence;                
 	}
 	
 	public FastaRecord(String name, String sequence, String fullName)
@@ -31,7 +32,15 @@ public class FastaRecord
 	public String getFullName(){
 		return fullName;
 	}
-	
+
+        public String getBarcodeLabel() {
+            return barcodeLabel;
+        }
+
+        public void setBarcodeLabel(String barcodeLabel) {
+            this.barcodeLabel = barcodeLabel;
+        }
+        
 	public String getComplementSequence()
 	{
 		StringBuilder sb=new StringBuilder(sequence);
